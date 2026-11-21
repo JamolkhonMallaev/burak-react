@@ -16,7 +16,7 @@ class MemberService {
 
       return result.data;
     } catch (err) {
-      console.log("Error, getTopUsers");
+      console.log("Error, getTopUsers", err);
       throw err;
     }
   }
@@ -29,7 +29,7 @@ class MemberService {
       const restaurant: Member = result.data;
       return restaurant;
     } catch (err) {
-      console.log("Error, getRestaurant");
+      console.log("Error, getRestaurant", err);
       throw err;
     }
   }
@@ -44,7 +44,7 @@ class MemberService {
 
       return member;
     } catch (err) {
-      console.log("Error, signup");
+      console.log("Error, signup", err);
       throw err;
     }
   }
@@ -59,7 +59,21 @@ class MemberService {
 
       return member;
     } catch (err) {
-      console.log("Error, login");
+      console.log("Error, login", err);
+      throw err;
+    }
+  }
+
+  public async logout(): Promise<void> {
+    try {
+      const url = this.path + "/member/logout";
+      const result = await axios.post(url, {}, { withCredentials: true });
+
+      localStorage.removeItem("memberData");
+
+      return result.data.logout;
+    } catch (err) {
+      console.log("Error, logout", err);
       throw err;
     }
   }
