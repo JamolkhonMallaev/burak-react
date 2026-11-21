@@ -28,7 +28,7 @@ class ProductService {
   public async getProduct(productId: string): Promise<Product> {
     try {
       const url = `${this.path}/product/${productId}`;
-      const result = axios.get(url, { withCredentials: true });
+      const result = await axios.get(url, { withCredentials: true });
       // @ts-ignore
       return result.data;
     } catch (err) {

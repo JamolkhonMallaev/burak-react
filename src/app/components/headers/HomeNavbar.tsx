@@ -1,3 +1,4 @@
+import { Logout } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -8,12 +9,10 @@ import {
   Stack,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import Basket from "./Basket";
-import { useState, useEffect } from "react";
+import { serverApi } from "../../../lib/config";
 import { CartItem } from "../../../lib/types/search";
 import { useGlobals } from "../../hooks/useGlobals";
-import { serverApi } from "../../../lib/config";
-import { Logout } from "@mui/icons-material";
+import Basket from "./Basket";
 
 interface HomeNavbarProps {
   cartItems: CartItem[];
@@ -24,7 +23,7 @@ interface HomeNavbarProps {
   setSignupOpen: (isOpen: boolean) => void;
   setLoginOpen: (isOpen: boolean) => void;
   handleLogoutClick: (e: React.MouseEvent<HTMLElement>) => void;
-  anchorEl: HTMLElement | null;
+  anChorEl: null | HTMLElement;
   handleCloseLogout: () => void;
   handleLogoutRequest: () => void;
 }
@@ -36,10 +35,10 @@ export default function HomeNavbar(props: HomeNavbarProps) {
     onRemove,
     onDelete,
     onDeleteAll,
-    setSignupOpen,
     setLoginOpen,
+    setSignupOpen,
     handleLogoutClick,
-    anchorEl,
+    anChorEl,
     handleCloseLogout,
     handleLogoutRequest,
   } = props;
@@ -54,40 +53,42 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               <img
                 className="brand-logo"
                 src="/icons/burak.svg"
-                alt="Burak logo"
-              />
+                alt="logo"
+                style={{ width: "125px", height: "30px" }}
+              ></img>
             </NavLink>
           </Box>
           <Stack className="links">
             <Box className={"hover-line"}>
-              <NavLink to="/" activeClassName={"underline"}>
+              <NavLink activeClassName={"underline"} to="/">
                 Home
               </NavLink>
             </Box>
             <Box className={"hover-line"}>
-              <NavLink to="/products" activeClassName={"underline"}>
+              <NavLink activeClassName={"underline"} to="/products">
                 Products
               </NavLink>
             </Box>
             {authMember ? (
               <Box className={"hover-line"}>
-                <NavLink to="/orders" activeClassName={"underline"}>
+                <NavLink activeClassName={"underline"} to="/orders">
                   Orders
                 </NavLink>
               </Box>
             ) : null}
             {authMember ? (
               <Box className={"hover-line"}>
-                <NavLink to="/member-page" activeClassName={"underline"}>
+                <NavLink activeClassName={"underline"} to="/member-page">
                   My Page
                 </NavLink>
               </Box>
             ) : null}
             <Box className={"hover-line"}>
-              <NavLink to="/help" activeClassName={"underline"}>
+              <NavLink activeClassName={"underline"} to="/help">
                 Help
               </NavLink>
             </Box>
+
             {/* BASKET */}
             <Basket
               cartItems={cartItems}
@@ -100,8 +101,9 @@ export default function HomeNavbar(props: HomeNavbarProps) {
             {!authMember ? (
               <Box>
                 <Button
-                  variant="contained"
                   className="login-button"
+                  variant="contained"
+                  style={{ background: "#3776CC", color: "#f8f8ff" }}
                   onClick={() => setLoginOpen(true)}
                 >
                   Login
@@ -109,21 +111,20 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               </Box>
             ) : (
               <img
-                className="user-avatar"
+                style={{ width: "50px", height: "50px", borderRadius: "24px" }}
                 src={
-                  authMember?.memberImage
-                    ? `${serverApi}/${authMember?.memberImage}`
+                  authMember.memberImage
+                    ? `${serverApi}/${authMember.memberImage}`
                     : "/icons/default-user.svg"
                 }
-                aria-haspopup={"true"}
+                alt="user"
                 onClick={handleLogoutClick}
               />
             )}
-
             <Menu
-              anchorEl={anchorEl}
+              anchorEl={anChorEl}
               id="account-menu"
-              open={Boolean(anchorEl)}
+              open={Boolean(anChorEl)}
               onClose={handleCloseLogout}
               onClick={handleCloseLogout}
               PaperProps={{
@@ -155,8 +156,7 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-              {/*@ts-ignore  */}
-              <MenuItem onCLick={handleLogoutRequest}>
+              <MenuItem onClick={handleLogoutRequest}>
                 <ListItemIcon>
                   <Logout fontSize="small" style={{ color: "blue" }} />
                 </ListItemIcon>
@@ -172,7 +172,7 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               World's Most Delicious Cousine
             </Box>
             <Box className={"wel-txt"}>The choice, not just a choice</Box>
-            <Box className={"service-txt"}>24 hours service</Box>
+            <Box className={"service-txt"}>24 hours Service</Box>
             <Box className={"signup"}>
               {!authMember ? (
                 <Button
