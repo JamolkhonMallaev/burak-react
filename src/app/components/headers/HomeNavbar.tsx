@@ -1,4 +1,3 @@
-import { Logout } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -9,10 +8,12 @@ import {
   Stack,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { serverApi } from "../../../lib/config";
+import Basket from "./Basket";
+import React, { useEffect, useState } from "react";
 import { CartItem } from "../../../lib/types/search";
 import { useGlobals } from "../../hooks/useGlobals";
-import Basket from "./Basket";
+import { serverApi } from "../../../lib/config";
+import { Logout } from "@mui/icons-material";
 
 interface HomeNavbarProps {
   cartItems: CartItem[];
@@ -22,8 +23,8 @@ interface HomeNavbarProps {
   onDeleteAll: () => void;
   setSignupOpen: (isOpen: boolean) => void;
   setLoginOpen: (isOpen: boolean) => void;
+  anchorEl: HTMLElement | null;
   handleLogoutClick: (e: React.MouseEvent<HTMLElement>) => void;
-  anChorEl: null | HTMLElement;
   handleCloseLogout: () => void;
   handleLogoutRequest: () => void;
 }
@@ -32,17 +33,19 @@ export default function HomeNavbar(props: HomeNavbarProps) {
   const {
     cartItems,
     onAdd,
-    onRemove,
     onDelete,
     onDeleteAll,
-    setLoginOpen,
+    onRemove,
     setSignupOpen,
+    setLoginOpen,
+    anchorEl,
     handleLogoutClick,
-    anChorEl,
     handleCloseLogout,
     handleLogoutRequest,
   } = props;
   const { authMember } = useGlobals();
+
+  /** HANDLERS */
 
   return (
     <div className="home-navbar">
@@ -50,46 +53,41 @@ export default function HomeNavbar(props: HomeNavbarProps) {
         <Stack className="menu">
           <Box>
             <NavLink to="/">
-              <img
-                className="brand-logo"
-                src="/icons/burak.svg"
-                alt="logo"
-                style={{ width: "125px", height: "30px" }}
-              ></img>
+              <img className="brand-logo" src="/icons/burak.svg" />
             </NavLink>
           </Box>
           <Stack className="links">
             <Box className={"hover-line"}>
-              <NavLink activeClassName={"underline"} to="/">
+              <NavLink to="/" activeClassName={"underline"}>
                 Home
               </NavLink>
             </Box>
             <Box className={"hover-line"}>
-              <NavLink activeClassName={"underline"} to="/products">
+              <NavLink to="/products" activeClassName={"underline"}>
                 Products
               </NavLink>
             </Box>
             {authMember ? (
               <Box className={"hover-line"}>
-                <NavLink activeClassName={"underline"} to="/orders">
+                <NavLink to="/orders" activeClassName={"underline"}>
                   Orders
                 </NavLink>
               </Box>
             ) : null}
             {authMember ? (
               <Box className={"hover-line"}>
-                <NavLink activeClassName={"underline"} to="/member-page">
-                  My Page
+                <NavLink to="/member-page" activeClassName={"underline"}>
+                  MyPage
                 </NavLink>
               </Box>
             ) : null}
             <Box className={"hover-line"}>
-              <NavLink activeClassName={"underline"} to="/help">
+              <NavLink to="/help" activeClassName={"underline"}>
                 Help
               </NavLink>
             </Box>
 
-            {/* BASKET */}
+            {/* BUSKET */}
             <Basket
               cartItems={cartItems}
               onAdd={onAdd}
@@ -101,9 +99,8 @@ export default function HomeNavbar(props: HomeNavbarProps) {
             {!authMember ? (
               <Box>
                 <Button
-                  className="login-button"
                   variant="contained"
-                  style={{ background: "#3776CC", color: "#f8f8ff" }}
+                  className="login-button"
                   onClick={() => setLoginOpen(true)}
                 >
                   Login
@@ -111,20 +108,21 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               </Box>
             ) : (
               <img
-                style={{ width: "50px", height: "50px", borderRadius: "24px" }}
+                className="user-avatar"
                 src={
-                  authMember.memberImage
-                    ? `${serverApi}/${authMember.memberImage}`
+                  authMember?.memberImage
+                    ? `${serverApi}/${authMember?.memberImage}`
                     : "/icons/default-user.svg"
                 }
-                alt="user"
+                aria-haspopup={"true"}
                 onClick={handleLogoutClick}
               />
             )}
+
             <Menu
-              anchorEl={anChorEl}
+              anchorEl={anchorEl}
               id="account-menu"
-              open={Boolean(anChorEl)}
+              open={Boolean(anchorEl)}
               onClose={handleCloseLogout}
               onClick={handleCloseLogout}
               PaperProps={{
@@ -166,18 +164,18 @@ export default function HomeNavbar(props: HomeNavbarProps) {
           </Stack>
         </Stack>
 
-        <Stack className="header-frame">
-          <Stack className="detail">
+        <Stack className={"header-frame"}>
+          <Stack className={"detail"}>
             <Box className={"head-main-txt"}>
               World's Most Delicious Cousine
             </Box>
-            <Box className={"wel-txt"}>The choice, not just a choice</Box>
-            <Box className={"service-txt"}>24 hours Service</Box>
+            <Box className={"wel-txt"}>The Choice, not just a choice</Box>
+            <Box className={"service-txt"}>24 hours service</Box>
             <Box className={"signup"}>
               {!authMember ? (
                 <Button
-                  variant={"contained"}
-                  className={"signup-button"}
+                  variant="contained"
+                  className="signup-button"
                   onClick={() => setSignupOpen(true)}
                 >
                   SIGN UP
@@ -185,8 +183,8 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               ) : null}
             </Box>
           </Stack>
-          <Box className="logo-frame">
-            <div className="logo-img"></div>
+          <Box className={"logo-frame"}>
+            <div className={"logo-img"}></div>
           </Box>
         </Stack>
       </Container>

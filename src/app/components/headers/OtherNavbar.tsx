@@ -1,4 +1,3 @@
-import { Logout } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -9,10 +8,11 @@ import {
   Stack,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { serverApi } from "../../../lib/config";
+import Basket from "./Basket";
 import { CartItem } from "../../../lib/types/search";
 import { useGlobals } from "../../hooks/useGlobals";
-import Basket from "./Basket";
+import { serverApi } from "../../../lib/config";
+import { Logout } from "@mui/icons-material";
 
 interface OtherNavbarProps {
   cartItems: CartItem[];
@@ -22,8 +22,8 @@ interface OtherNavbarProps {
   onDeleteAll: () => void;
   setSignupOpen: (isOpen: boolean) => void;
   setLoginOpen: (isOpen: boolean) => void;
+  anchorEl: HTMLElement | null;
   handleLogoutClick: (e: React.MouseEvent<HTMLElement>) => void;
-  anChorEl: null | HTMLElement;
   handleCloseLogout: () => void;
   handleLogoutRequest: () => void;
 }
@@ -32,13 +32,13 @@ export default function OtherNavbar(props: OtherNavbarProps) {
   const {
     cartItems,
     onAdd,
-    onRemove,
     onDelete,
     onDeleteAll,
-    setLoginOpen,
+    onRemove,
     setSignupOpen,
+    setLoginOpen,
+    anchorEl,
     handleLogoutClick,
-    anChorEl,
     handleCloseLogout,
     handleLogoutRequest,
   } = props;
@@ -49,11 +49,7 @@ export default function OtherNavbar(props: OtherNavbarProps) {
         <Stack className="menu">
           <Box>
             <NavLink to="/">
-              <img
-                className="brand-logo"
-                src="/icons/burak.svg"
-                alt="Burak logo"
-              />
+              <img className="brand-logo" src="/icons/burak.svg" />
             </NavLink>
           </Box>
           <Stack className="links">
@@ -75,7 +71,7 @@ export default function OtherNavbar(props: OtherNavbarProps) {
             {authMember ? (
               <Box className={"hover-line"}>
                 <NavLink to="/member-page" activeClassName={"underline"}>
-                  My Page
+                  MyPage
                 </NavLink>
               </Box>
             ) : null}
@@ -84,7 +80,8 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                 Help
               </NavLink>
             </Box>
-            {/* BASKET */}
+
+            {/* BUSKET */}
             <Basket
               cartItems={cartItems}
               onAdd={onAdd}
@@ -98,7 +95,6 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                 <Button
                   variant="contained"
                   className="login-button"
-                  style={{ background: "#3776CC", color: "#f8f8ff" }}
                   onClick={() => setLoginOpen(true)}
                 >
                   Login
@@ -109,17 +105,18 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                 className="user-avatar"
                 src={
                   authMember?.memberImage
-                    ? `${serverApi}/${authMember.memberImage}`
+                    ? `${serverApi}/${authMember?.memberImage}`
                     : "/icons/default-user.svg"
                 }
-                alt="user avatar"
+                aria-haspopup={"true"}
                 onClick={handleLogoutClick}
               />
             )}
+
             <Menu
-              anchorEl={anChorEl}
+              anchorEl={anchorEl}
               id="account-menu"
-              open={Boolean(anChorEl)}
+              open={Boolean(anchorEl)}
               onClose={handleCloseLogout}
               onClick={handleCloseLogout}
               PaperProps={{
