@@ -87,7 +87,7 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               </NavLink>
             </Box>
 
-            {/* BUSKET */}
+            {/* BASKET */}
             <Basket
               cartItems={cartItems}
               onAdd={onAdd}
