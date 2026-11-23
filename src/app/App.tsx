@@ -10,14 +10,13 @@ import Footer from "./components/footer";
 import HelpPage from "./screens/helpPage";
 import useBasket from "./hooks/useBasket";
 import AuthenticationModal from "./components/auth"; // @ts-ignore
-import "../css/app.css"; // @ts-ignore
-import "../css/navbar.css"; // @ts-ignore
-import "../css/footer.css";
-import { T } from "../lib/types/common";
 import { sweetErrorHandling, sweetTopSuccessAlert } from "../lib/sweetAlert";
 import { Messages } from "../lib/config";
 import MemberService from "./services/MemberService";
-import { useGlobals } from "./hooks/useGlobals";
+import { useGlobals } from "./hooks/useGlobals"; // @ts-ignore
+import "../css/app.css"; // @ts-ignore
+import "../css/navbar.css"; // @ts-ignore
+import "../css/footer.css";
 
 function App() {
   const location = useLocation();
